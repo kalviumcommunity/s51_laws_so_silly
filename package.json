@@ -1,0 +1,18 @@
+{
+  "name": "s51_laws_so_silly",
+  "version": "1.0.0",
+  "description": "Welcome to Laws So Silly, your ultimate guide to the wacky and wonderful world of bizarre laws from around the globe. Dive into a hilarious journey through unusual regulations, from the downright nonsensical to the surprisingly logical, and uncover the stories behind these head-scratching legal oddities.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^6.3.0",
+    "node": "^21.6.1",
+    "react": "^18.2.0"
+  }
+}
