@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser")
 const port = 3000;
-const { connectToDB } = require("./config/DB");
+const { connectToDB, mongooseConnection } = require("./config/DB");
 const { getData, postData, updateData, deleteData } = require('./routes/routes');
 
 // Middleware to parse JSON requests
@@ -27,8 +27,15 @@ const connectToDbAndStartServer = async () => {
 connectToDbAndStartServer();
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    const connectionStatus =
+        mongooseConnection.readyState === 0 ? "Disconnected" :
+        mongooseConnection.readyState === 1 ? "Connected" :
+        mongooseConnection.readyState === 2 ? "Connecting" :
+        mongooseConnection.readyState === 3 ? "Disconnecting" : "Unknown";
+
+    res.send(`Hello World! ${connectionStatus}`);
 });
+
 
 app.get('/ping', (req, res) => {
     res.json({ message: "Ping is active" });
