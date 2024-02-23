@@ -1,0 +1,21 @@
+meta {
+  name: post data to mongo db
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/api/postData
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Country": "Country",
+    "State_Region_if_applicable": "State_Region_if_applicable",
+    "Law": "Law",
+    "Penalty": "Penalty"
+  }
+  
+}

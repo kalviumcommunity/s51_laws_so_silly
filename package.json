@@ -4,12 +4,14 @@
   "description": "Welcome to Laws So Silly, your ultimate guide to the wacky and wonderful world of bizarre laws from around the globe. Dive into a hilarious journey through unusual regulations, from the downright nonsensical to the surprisingly logical, and uncover the stories behind these head-scratching legal oddities.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.3",
