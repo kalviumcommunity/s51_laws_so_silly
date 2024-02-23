@@ -33,14 +33,19 @@ postData.post("/api/postData", async (req, res) => {
 updateData.patch("/api/patchData/:Country", async (req, res) => {
     try {
         const { Country } = req.params;
-        const updatedField = req.body;
+        const updatedField = req.body; // get the fields to be updated in the found document 
 
         // Use your Mongoose model for the database operation
+        // const updated document = await Model.findOneAndUpdate(filter, update, options)
+        // filter --> specify the query criteria to find the particular document 
+        // update --> fields to be update
+        // options --> any additional options
+        // { new: true } --> return the updated document
         const updatedLaw = await laws.findOneAndUpdate({ Country }, updatedField, { new: true });
-
-        if (!updatedLaw) {
+        
+        if (!updatedLaw) 
             return res.status(404).json('No law found');
-        }
+        
 
         console.log(updatedLaw);
         res.status(200).json(updatedLaw);
@@ -55,11 +60,11 @@ deleteData.delete('/api/deleteData/:Country', async (req, res) => {
     const deleteField = req.body
     
     const deleteLaw = await laws.findOneAndDelete({ Country }, deleteField, {new: true})
-    if(!deleteData)
+    if(!deleteLaw)
         return res.status(404).json({error: "Food not deleted"})
 
-    console.log(deleteData)
-    res.status(200).json(deleteData)   
+    console.log(deleteLaw)
+    res.status(200).json(deleteLaw)   
 })
 
 module.exports = { getData, postData, updateData, deleteData }
