@@ -29,4 +29,6 @@ Prepare to be amazed and perhaps a little bewildered by laws that defy expectati
 
 ## Deployment
 
-Check out the deployed website [here](https://laws-so-silly.onrender.com/)!
+Check out the backend [here](https://laws-so-silly.onrender.com/)!
+
+Check out the frontend [here](https://s51-lawssossilly.netlify.app/)!
