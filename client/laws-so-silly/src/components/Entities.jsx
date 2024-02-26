@@ -1,42 +1,15 @@
-import { useState, useEffect } from 'react';
+import React from 'react'
+import data from "../data/data.json"
 
 const Entities = () => {
-    const [data, setData] = useState(null);
+  return (
+    <div>
+          <h1>{data.Country}</h1>
+          <p>{data.Law}</p>
+          <p>{data.Penalty}</p>
+          <p>{data.State_Region_if_applicable}</p>
+    </div>  
+  )
+}
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                console.log("first")
-                const response = await fetch("http://localhost:3000/api/getData");
-                const jsonData = await response.json();
-                setData(jsonData);
-                console.log(jsonData)
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    return (
-        <>
-            {data && (
-                <div>
-                    {
-                        data.map((law, index) =>
-                            <div key={index}>
-                                <h1>{law.Country}</h1>
-                                <p>{law.Law}</p>
-                                <p>{law.Penalty}</p>
-                                <p>{law.State_Region_if_applicable}</p>
-                            </div>
-                        )
-                    }
-                </div>
-            )}
-        </>
-    );
-};
-
-export default Entities;
+export default Entities
