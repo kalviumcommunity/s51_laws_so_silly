@@ -21,9 +21,9 @@ postData.post("/api/postData", async (req, res) => {
     try {
         console.log(req.body)
         const { Country, State_Region_if_applicable, Law, Penalty } = req.body
-        const newFood = await laws.create({ Country, State_Region_if_applicable, Law, Penalty })
-        console.log(newFood)
-        res.status(201).json(newFood)
+        const newlaw = await laws.create({ Country, State_Region_if_applicable, Law, Penalty })
+        console.log(newlaw)
+        res.status(201).json(newlaw)
         console.log("postsss")
     } catch (err) {
         console.log(err)
@@ -61,7 +61,7 @@ deleteData.delete('/api/deleteData/:Country', async (req, res) => {
     
     const deleteLaw = await laws.findOneAndDelete({ Country }, deleteField, {new: true})
     if(!deleteLaw)
-        return res.status(404).json({error: "Food not deleted"})
+        return res.status(404).json({error: "Law not deleted"})
 
     console.log(deleteLaw)
     res.status(200).json(deleteLaw)   
