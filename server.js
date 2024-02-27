@@ -22,7 +22,7 @@ const connectToDbAndStartServer = async () => {
         await connectToDB();
         app.listen(port, () => console.log("Server is being listened on", port));
     } catch (err) {
-        console.error("An error has occurred", err);
+        console.error("An error has occurrged", err);
     }
 }
 
