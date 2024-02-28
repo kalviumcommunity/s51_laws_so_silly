@@ -1,9 +1,14 @@
-import Entities from "./components/Entities"
+import { BrowserRouter as Router} from "react-router-dom"
+import Allroutes from "./Allroutes"
+import Navbar from "./components/Navbar"
 
 const App = () => {
   return (
     <>
-      <Entities />
+      <Router>
+        <Navbar />
+        <Allroutes />
+      </Router>
     </>
   )
 }
