@@ -1,11 +1,13 @@
 import  { useState, useEffect } from 'react';
 import Entity from './Entity';
+import { ToastContainer } from 'react-toastify';
 
 const Entities = () => {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const fetchURL = "https://laws-so-silly.onrender.com/api/getData";
+    const [reload, setReload]  = useState(true)
     const fetchData = async () => {
         try {
             console.log("Fetching data...");
@@ -26,10 +28,11 @@ const Entities = () => {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [reload]);
     
     return (
         <>
+            <ToastContainer />
             {isLoading ? (
                 <h1>
                     loading ...
@@ -41,7 +44,7 @@ const Entities = () => {
                 <div>
                     <h1>Data from DB</h1>
                     {data.map((law, index) => (
-                        <Entity key={index} law={law} />
+                        <Entity key={index} setReload={setReload} law={law} />
                     ))}
                 </div>
             )}
