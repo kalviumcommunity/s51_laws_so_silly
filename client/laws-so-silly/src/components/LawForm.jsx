@@ -11,10 +11,11 @@ const Forms = ({ create = true, Country }) => {
         const arr = ["Country", "Law", "Penalty", "State_Region_if_applicable"]
         for (let key of arr)
             data[key] = data[key].trim()
+        return data
     }
     const createUser = async (data) => {
         try {
-            trimmer(data)
+            data = trimmer(data)
             const response = await axios.post(api + "postData", data);
             console.log(response.data);
             toast.success("Addition successful")
@@ -26,7 +27,7 @@ const Forms = ({ create = true, Country }) => {
 
     const updateUser = async (data) => {
         try {
-            trimmer(data)
+            data = trimmer(data)
             console.log(Country)
             const res = await axios.patch(api + `patchData/${Country}`, data)
             console.log(res.data)
