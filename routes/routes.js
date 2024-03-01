@@ -6,6 +6,10 @@ const postData = express.Router()
 const updateData = express.Router()
 const  deleteData = express.Router() 
 
+// joi validator for update and post
+
+const updateAndPostJoi = require("../validator") 
+
 // handle incoming GET requests for /api/data
 getData.get("/api/getData", async (req, res) => {
     try {
@@ -19,22 +23,30 @@ getData.get("/api/getData", async (req, res) => {
 
 postData.post("/api/postData", async (req, res) => {
     try {
-        console.log(req.body)
+        const {error, value} = updateAndPostJoi(req.body)
+        if(error)
+            return res.status(400).json(error.details)
+        else{
         const { Country, State_Region_if_applicable, Law, Penalty } = req.body
         const newlaw = await laws.create({ Country, State_Region_if_applicable, Law, Penalty })
         console.log(newlaw)
         res.status(201).json(newlaw)
         console.log("postsss")
+        }
     } catch (err) {
-        console.log(err)
+        res.send(err.message)
     }
 })
 // parameters are placeholders in the route pattern, defined by segments prefixed with a colon (:). 
 updateData.patch("/api/patchData/:Country", async (req, res) => {
     try {
+        const { error, value } = updateAndPostJoi(req.body)
+        if (error)
+            return res.status(400).json(error.details)
+        else {
+            // console.log(value)
         const { Country } = req.params;
         const updatedField = req.body; // get the fields to be updated in the found document 
-
         // Use your Mongoose model for the database operation
         // const updated document = await Model.findOneAndUpdate(filter, update, options)
         // filter --> specify the query criteria to find the particular document 
@@ -49,6 +61,7 @@ updateData.patch("/api/patchData/:Country", async (req, res) => {
 
         console.log(updatedLaw);
         res.status(200).json(updatedLaw);
+        }
     } catch (error) {
         res.status(500).json('Something went wrong');
     }
