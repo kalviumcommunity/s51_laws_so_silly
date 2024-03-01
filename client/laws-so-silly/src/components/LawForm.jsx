@@ -7,9 +7,14 @@ import 'react-toastify/dist/ReactToastify.css';
 const Forms = ({ create = true, Country }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const api = "https://laws-so-silly.onrender.com/api/"
-
+    const trimmer = (data) => {
+        const arr = ["Country", "Law", "Penalty", "State_Region_if_applicable"]
+        for (let key of arr)
+            data[key] = data[key].trim()
+    }
     const createUser = async (data) => {
         try {
+            trimmer(data)
             const response = await axios.post(api + "postData", data);
             console.log(response.data);
             toast.success("Addition successful")
@@ -21,6 +26,7 @@ const Forms = ({ create = true, Country }) => {
 
     const updateUser = async (data) => {
         try {
+            trimmer(data)
             console.log(Country)
             const res = await axios.patch(api + `patchData/${Country}`, data)
             console.log(res.data)
@@ -36,7 +42,7 @@ const Forms = ({ create = true, Country }) => {
         <>
             <div>
                 <ToastContainer />
-                {create ? <h2>Add new data</h2>: <h2>Update {Country} data</h2>}
+                {create ? <h2>Add new data</h2> : <h2>Update {Country} data</h2>}
                 <form onSubmit={handleSubmit(create ? createUser : updateUser)}>
                     <div>
                         <input
@@ -47,7 +53,7 @@ const Forms = ({ create = true, Country }) => {
                                 required: "Country Cannot be empty",
                                 pattern: {
                                     value: /^[A-Z a-z]+/,
-                                    message: "Country can only contain alphabets"
+                                    message: "Country can only contain alphabets and should not contain empty spaces at the end"
                                 }
                             })}
                         />
@@ -60,7 +66,10 @@ const Forms = ({ create = true, Country }) => {
                             id="law"
                             placeholder='Law'
                             {...register("Law", {
-                                required: "Law cannot be empty"
+                                required: "Law cannot be empty",
+                                pattern: {
+                                    value: /^[A-z a-z]+/
+                                }
                             })}
                         />
                         {errors.Law &&
