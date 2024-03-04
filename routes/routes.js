@@ -1,83 +1,63 @@
-const express = require("express")
-// creates a new router object. This router object behaves like a mini-application or middleware system within your main Express application.
-const laws = require("../model/Law")
-const getData = express.Router()
-const postData = express.Router()
-const updateData = express.Router()
-const  deleteData = express.Router() 
+const express = require("express");
+const laws = require("../model/Law");
+const router = express.Router();
+const updateAndPostJoi = require("../validator");
 
-// joi validator for update and post
-
-const updateAndPostJoi = require("../validator") 
-
-// handle incoming GET requests for /api/data
-getData.get("/api/getData", async (req, res) => {
+// Handle incoming GET requests for /api/data
+router.get("/api/getData", async (req, res) => {
     try {
-        const data = await laws.find()
-        res.send(data)
-        console.log("data retrieved", data)
+        const data = await laws.find();
+        res.send(data);
+        console.log("data retrieved", data);
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-})
+});
 
-postData.post("/api/postData", async (req, res) => {
+router.post("/api/postData", async (req, res) => {
     try {
-        const {error, value} = updateAndPostJoi(req.body)
-        if(error)
-            return res.status(400).json(error.details)
-        else{
-        const { Country, State_Region_if_applicable, Law, Penalty } = req.body
-        const newlaw = await laws.create({ Country, State_Region_if_applicable, Law, Penalty })
-        console.log(newlaw)
-        res.status(201).json(newlaw)
-        console.log("postsss")
+        const { error, value } = updateAndPostJoi(req.body);
+        if (error)
+            return res.status(400).json(error.details);
+        else {
+            const { Country, State_Region_if_applicable, Law, Penalty } = req.body;
+            const newlaw = await laws.create({ Country, State_Region_if_applicable, Law, Penalty });
+            console.log(newlaw);
+            res.status(201).json(newlaw);
+            console.log("postsss");
         }
     } catch (err) {
-        res.send(err.message)
+        res.status(500).send(err.message);
     }
-})
-// parameters are placeholders in the route pattern, defined by segments prefixed with a colon (:). 
-updateData.patch("/api/patchData/:Country", async (req, res) => {
-    try {
-        const { error, value } = updateAndPostJoi(req.body)
-        if (error)
-            return res.status(400).json(error.details)
-        else {
-            // console.log(value)
-        const { Country } = req.params;
-        const updatedField = req.body; // get the fields to be updated in the found document 
-        // Use your Mongoose model for the database operation
-        // const updated document = await Model.findOneAndUpdate(filter, update, options)
-        // filter --> specify the query criteria to find the particular document 
-        // update --> fields to be update
-        // options --> any additional options
-        // { new: true } --> return the updated document
-        const updatedLaw = await laws.findOneAndUpdate({ Country }, updatedField, { new: true });
-        
-        if (!updatedLaw) 
-            return res.status(404).json('No law found');
-        
+});
 
-        console.log(updatedLaw);
-        res.status(200).json(updatedLaw);
+router.patch("/api/patchData/:Country", async (req, res) => {
+    try {
+        const { error, value } = updateAndPostJoi(req.body);
+        if (error)
+            return res.status(400).json(error.details);
+        else {
+            const { Country } = req.params;
+            const updatedField = req.body;
+            const updatedLaw = await laws.findOneAndUpdate({ Country }, updatedField, { new: true });
+            if (!updatedLaw)
+                return res.status(404).json('No law found');
+            console.log(updatedLaw);
+            res.status(200).json(updatedLaw);
         }
     } catch (error) {
         res.status(500).json('Something went wrong');
     }
 });
 
+router.delete('/api/deleteData/:Country', async (req, res) => {
+    const { Country } = req.params;
+    const deleteLaw = await laws.findOneAndDelete({ Country });
+    if (!deleteLaw)
+        return res.status(404).json({ error: "Law not deleted" });
+    console.log(deleteLaw);
+    res.status(200).json(deleteLaw);
+});
 
-deleteData.delete('/api/deleteData/:Country', async (req, res) => {
-    const { Country } = req.params
-    const deleteField = req.body
-    
-    const deleteLaw = await laws.findOneAndDelete({ Country }, deleteField, {new: true})
-    if(!deleteLaw)
-        return res.status(404).json({error: "Law not deleted"})
-
-    console.log(deleteLaw)
-    res.status(200).json(deleteLaw)   
-})
-
-module.exports = { getData, postData, updateData, deleteData }
+module.exports = router;
