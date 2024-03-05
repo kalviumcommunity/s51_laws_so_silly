@@ -5,8 +5,7 @@ const bodyParser = require("body-parser")
 const port = 3000;
 const { connectToDB, mongooseConnection } = require("./config/DB");
 // const { getData, postData, updateData, deleteData } = require('./routes/routes');
-const router = require("./routes/routes")
-
+const {router, authRouter} = require("./routes/routes")
 // Middleware to parse JSON requests
 app.use(express.json());
 app.use(bodyParser.json())
@@ -14,10 +13,7 @@ app.use(cors())
 
 // Routes
 app.use("/", router)
-// app.use("/", getData);
-// app.use("/", postData);
-// app.use("/", updateData)
-// app.use("/", deleteData)
+app.use("/", authRouter)
 // Connect to the database and start the server
 const connectToDbAndStartServer = async () => {
     try {

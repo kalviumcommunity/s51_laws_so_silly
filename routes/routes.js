@@ -2,7 +2,9 @@ const express = require("express");
 const laws = require("../model/Law");
 const router = express.Router();
 const updateAndPostJoi = require("../validator");
-
+const authRouter = express.Router()
+const users = require("../model/User")
+const cookieParser = require("cookie-parser")
 // Handle incoming GET requests for /api/data
 router.get("/api/getData", async (req, res) => {
     try {
@@ -60,4 +62,34 @@ router.delete('/api/deleteData/:Country', async (req, res) => {
     res.status(200).json(deleteLaw);
 });
 
-module.exports = router;
+authRouter.get("/api/getUsers", async(req, res)     => {
+    try {
+        const data = await users.find()
+        res.json(data)
+        console.log(data)
+    } catch (error) {
+        console.log("errror 71", error.message)
+    }
+})
+
+authRouter.post("/api/login", (req, res) => {
+    try{
+        res.cookie("username", req.body)
+        res.send("username"+req.body)
+    }
+    catch(error){
+        console.log(error.message)
+    }
+})
+
+authRouter.get("/api/logout", (req, res) => {
+    try{
+        res.clearCookie("username")
+        res.send("Loogged out")
+    }
+    catch(error){
+        console.log("error logging out", error.message)
+    }
+})
+
+module.exports = {router, authRouter}
