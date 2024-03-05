@@ -74,7 +74,8 @@ authRouter.get("/api/getUsers", async(req, res)     => {
 
 authRouter.post("/api/login", (req, res) => {
     try{
-        res.cookie("username", req.body)
+        const {username} =  req.body;
+        res.cookie("username", username)
         res.send("username"+req.body)
     }
     catch(error){
