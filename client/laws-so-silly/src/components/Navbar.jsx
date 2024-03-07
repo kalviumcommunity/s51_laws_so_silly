@@ -12,13 +12,14 @@ const Navbar = () => {
         return cookieObj;
     };
 
-    const authorize = async() => {
+    const authorize = async () => {
         const res = await axios.get("https://laws-so-silly.onrender.com/logout")
-            console.log(res)
-            if (!getCookies().authToken) {
-                return toast.error("You have not logged in ")
-            }
-            toast.success("logged out successfully")
+        console.log(res)
+        if (!getCookies().authToken) {
+            return toast.error("You have not logged in ")
+        }
+        document.cookie = 'authToken=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;';
+        toast.success("logged out successfully")
     }
     return (
         <nav>
