@@ -5,6 +5,8 @@ const updateAndPostJoi = require("../validator");
 const authRouter = express.Router()
 const users = require("../model/User")
 const cookieParser = require("cookie-parser")
+var jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt")
 // Handle incoming GET requests for /api/data
 router.get("/api/getData", async (req, res) => {
     try {
@@ -62,7 +64,7 @@ router.delete('/api/deleteData/:Country', async (req, res) => {
     res.status(200).json(deleteLaw);
 });
 
-authRouter.get("/api/getUsers", async(req, res)     => {
+authRouter.get("/api/getUsers", async (req, res) => {
     try {
         const data = await users.find()
         res.json(data)
@@ -72,25 +74,44 @@ authRouter.get("/api/getUsers", async(req, res)     => {
     }
 })
 
-authRouter.post("/api/login", (req, res) => {
-    try{
-        const {username} =  req.body;
-        res.cookie("username", username)
-        res.send("username"+req.body)
+authRouter.post("/login", async (req, res) => {
+    try {
+        const data = await users.find()
+        console.log(data)
+        let { username, password } = req.body;
+        const verifier = data.find(user => user.username === username);
+        if (!verifier) {
+            return res.status(400).json({
+                message: "username not found"
+            });
+        }
+        const validPassword = await bcrypt.compare(password, verifier.password)
+        /*
+        - `bcrypt.compare` extracts the salt and the hash algorithm information from the `hashedPassword`.
+        - It applies the same salt and hash algorithm to the `plainTextPassword` to generate a hash.
+        - Finally, it compares the generated hash with the stored hash.
+         */
+        console.log(validPassword)
+        if (!validPassword)
+            return res.status(400).json({
+                message: "passwords do not match"
+            });
+        const authToken = jwt.sign(req.body, process.env.SECRET_KEY);
+        res.cookie("authToken", authToken);
+        res.json({ authToken, username });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
-    catch(error){
-        console.log(error.message)
-    }
-})
+});
 
-authRouter.get("/api/logout", (req, res) => {
-    try{
-        res.clearCookie("username")
-        res.send("Loogged out")
+authRouter.get("/logout", (req, res) => {
+    try {
+        res.clearCookie("authToken");
+        res.send("Logged out");
+    } catch (error) {
+        console.log("Error logging out", error.message);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch(error){
-        console.log("error logging out", error.message)
-    }
-})
+});
 
-module.exports = {router, authRouter}
+module.exports = { router, authRouter };

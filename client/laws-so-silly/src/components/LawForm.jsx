@@ -13,7 +13,7 @@ const Forms = ({ create = true, Country }) => {
             data[key] = data[key].trim()
         return data
     }
-    const createUser = async (data) => {
+    const createData = async (data) => {
         try {
             data = trimmer(data)
             const response = await axios.post(api + "postData", data);
@@ -25,7 +25,7 @@ const Forms = ({ create = true, Country }) => {
         }
     };
 
-    const updateUser = async (data) => {
+    const updateData = async (data) => {
         try {
             data = trimmer(data)
             console.log(Country)
@@ -44,7 +44,7 @@ const Forms = ({ create = true, Country }) => {
             <div>
                 <ToastContainer />
                 {create ? <h2>Add new data</h2> : <h2>Update {Country} data</h2>}
-                <form onSubmit={handleSubmit(create ? createUser : updateUser)}>
+                <form onSubmit={handleSubmit(create ? createData : updateData)}>
                     <div>
                         <input
                             type="text"
