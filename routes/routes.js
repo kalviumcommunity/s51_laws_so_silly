@@ -25,8 +25,8 @@ router.post("/api/postData", async (req, res) => {
         if (error)
             return res.status(400).json(error.details);
         else {
-            const { Country, State_Region_if_applicable, Law, Penalty } = req.body;
-            const newlaw = await laws.create({ Country, State_Region_if_applicable, Law, Penalty });
+            const { Country, State_Region_if_applicable, Law, Penalty, Continent} = req.body;
+            const newlaw = await laws.create({ Country, State_Region_if_applicable, Law, Penalty, Continent });
             console.log(newlaw);
             res.status(201).json(newlaw);
             console.log("postsss");
