@@ -4,11 +4,11 @@ import { ToastContainer, toast } from "react-toastify"
 import "../App.css"
 import 'react-toastify/dist/ReactToastify.css';
 
-const Forms = ({ create = true, Country }) => {
+const Forms = ({ create = true, Country, Continent }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const api = "https://laws-so-silly.onrender.com/api/"
     const trimmer = (data) => {
-        const arr = ["Country", "Law", "Penalty", "State_Region_if_applicable"]
+        const arr = ["Country", "Law", "Penalty", "State_Region_if_applicable", "Continent"]
         for (let key of arr)
             data[key] = data[key].trim()
         return data
@@ -90,7 +90,7 @@ const Forms = ({ create = true, Country }) => {
                     </div>
                     <div>
                         <input
-                            placeholder='state or region'
+                            placeholder='State or Region'
                             type="text"
                             id="state"
                             {...register("State_Region_if_applicable", {
@@ -99,6 +99,19 @@ const Forms = ({ create = true, Country }) => {
                         />
                         {errors.State_Region_if_applicable &&
                             <p className='error'>{errors.State_Region_if_applicable.message}</p>}
+                    </div>
+                    {/* Adding input field for Continent */}
+                    <div>
+                        <input
+                            placeholder='Continent'
+                            type="text"
+                            id="continent"
+                            {...register("Continent", {
+                                required: "Continent cannot be empty"
+                            })}
+                        />
+                        {errors.Continent &&
+                            <p className='error'>{errors.Continent.message}</p>}
                     </div>
                     <button type="submit">Submit</button>
                 </form>
