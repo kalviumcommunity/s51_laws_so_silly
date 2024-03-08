@@ -1,43 +1,44 @@
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { ToastContainer, toast } from "react-toastify"
-import "../App.css"
+import { ToastContainer, toast } from "react-toastify";
+import "../App.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-const Forms = ({ create = true, Country, Continent }) => {
+const Forms = ({ create = true, Country }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const api = "https://laws-so-silly.onrender.com/api/"
+    const api = "https://laws-so-silly.onrender.com/api/";
     const trimmer = (data) => {
-        const arr = ["Country", "Law", "Penalty", "State_Region_if_applicable", "Continent"]
+        const arr = ["Country", "Law", "Penalty", "State_Region_if_applicable", "Continent", "Created_by"];
         for (let key of arr)
-            data[key] = data[key].trim()
-        return data
-    }
+            data[key] = data[key].trim();
+        return data;
+    };
+
     const createData = async (data) => {
         try {
-            data = trimmer(data)
+            data = trimmer(data);
             const response = await axios.post(api + "postData", data);
             console.log(response.data);
-            toast.success("Addition successful")
+            toast.success("Addition successful");
         } catch (error) {
             console.error("Error:", error);
-            toast.error(error.message)
+            toast.error(error.message);
         }
     };
 
     const updateData = async (data) => {
         try {
-            data = trimmer(data)
-            console.log(Country)
-            const res = await axios.patch(api + `patchData/${Country}`, data)
-            console.log(res.data)
-            toast.success(`Updation of ${Country} successful`)
+            data = trimmer(data);
+            console.log(Country);
+            const res = await axios.patch(api + `patchData/${Country}`, data);
+            console.log(res.data);
+            toast.success(`Updation of ${Country} successful`);
         }
         catch (err) {
-            console.log(err.message)
-            toast.error("Error while updating")
+            console.log(err.message);
+            toast.error("Error while updating");
         }
-    }
+    };
 
     return (
         <>
@@ -113,12 +114,24 @@ const Forms = ({ create = true, Country, Continent }) => {
                         {errors.Continent &&
                             <p className='error'>{errors.Continent.message}</p>}
                     </div>
+                    {/* Adding input field for Created_by */}
+                    <div>
+                        <input
+                            type="text"
+                            id="createdBy"
+                            placeholder='Created by'
+                            {...register("Created_by", {
+                                required: "Created by cannot be empty"
+                            })}
+                        />
+                        {errors.Created_by &&
+                            <p className='error'>{errors.Created_by.message}</p>}
+                    </div>
                     <button type="submit">Submit</button>
                 </form>
             </div>
-
         </>
     )
-}
+};
 
 export default Forms;

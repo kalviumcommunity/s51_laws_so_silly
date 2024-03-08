@@ -68,6 +68,7 @@ const Entity = ({ law, setReload }) => {
       <p className="penalty">{law.Penalty}</p>
       <p className="region">{law.State_Region_if_applicable}</p>
       <p className="continent">{law.Continent}</p>
+      <p className="continent">{law.Created_by}</p>
       <button onClick={checkUpdate}>- Update +</button>
       <button onClick={() => isAuthorized ? deleteDocument() : toast.error("You are not an authorized user.")}>- Delete -</button>
     </div>

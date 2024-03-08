@@ -8,7 +8,7 @@ const Entities = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [reload, setReload] = useState(true);
     const [filteredData, setFilteredData] = useState(null);
-    const [continents, setContinents] = useState(null);
+    const [creators, setCreators] = useState(null);
     const [filter, setFilter] = useState("all");
     const fetchURL = "https://laws-so-silly.onrender.com/api/getData";
 
@@ -21,9 +21,9 @@ const Entities = () => {
             }
             const jsonData = await response.json();
             setData(jsonData);
-            // Extract continents from data
-            const uniqueContinents = [...new Set(jsonData.map(law => law.Continent))];
-            setContinents(uniqueContinents);
+            // Extract creators from data
+            const uniqueCreators = [...new Set(jsonData.map(law => law.Created_by))];
+            setCreators(uniqueCreators);
             setIsLoading(false);
             console.log(jsonData);
         } catch (error) {
@@ -38,8 +38,8 @@ const Entities = () => {
     }, [reload]);
 
     useEffect(() => {
-        // Filter data based on selected continent
-        setFilteredData(filter === "all" ? data : data.filter(law => law.Continent === filter));
+        // Filter data based on selected creator
+        setFilteredData(filter === "all" ? data : data.filter(law => law.Created_by === filter));
     }, [filter, data]);
 
     const handleFilterChange = (event) => {
@@ -57,11 +57,11 @@ const Entities = () => {
                 <p>Error: {error.message}</p>
             ) : (
                 <div>
-                    <h1>Data laws from <span style={{ color: "red" }}>{filter}</span> {filter === "all" ? "continents" : "continent"} from DB</h1>
+                    <h1>Data laws from <span style={{ color: "red" }}>{filter}</span> {filter === "all" ? "creators" : "creator"} from DB</h1>
                     <select value={filter} onChange={handleFilterChange}>
                         <option value="all">All</option>
-                        {continents && continents.map((continent, index) => (
-                            <option key={index} value={continent}>{continent}</option>
+                        {creators && creators.map((creator, index) => (
+                            <option key={index} value={creator}>{creator}</option>
                         ))}
                     </select>
                     {filteredData && filteredData.map((law, index) => (

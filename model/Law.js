@@ -20,6 +20,10 @@ const LawSchema = mongoose.Schema({
     Continent: {
         required: true,
         type: String
+    },
+    Created_by: {
+        required: true,
+        type: String
     }
 });
 
