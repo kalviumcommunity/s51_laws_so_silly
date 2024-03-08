@@ -7,7 +7,8 @@ const postUpdateSchema = Joi.object({
     Law: Joi.string().required(),
     Penalty: Joi.string().required(),
     State_Region_if_applicable: Joi.string().required(),
-    Continent: Joi.string().required()
+    Continent: Joi.string().required(),
+    Created_by: Joi.string().required()
 })
 
 const updateAndPostValidator = validator(postUpdateSchema)
