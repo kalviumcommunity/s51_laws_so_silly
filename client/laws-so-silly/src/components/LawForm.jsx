@@ -1,43 +1,51 @@
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { ToastContainer, toast } from "react-toastify"
-import "../App.css"
+import { ToastContainer, toast } from "react-toastify";
+import "../App.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 const Forms = ({ create = true, Country }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const api = "https://laws-so-silly.onrender.com/api/"
+    const api = "https://laws-so-silly.onrender.com/api/";
+    const trimmer = (data) => {
+        const arr = ["Country", "Law", "Penalty", "State_Region_if_applicable", "Continent", "Created_by"];
+        for (let key of arr)
+            data[key] = data[key].trim();
+        return data;
+    };
 
-    const createUser = async (data) => {
+    const createData = async (data) => {
         try {
-            const response = await axios.post(api + "postData", data);
-            console.log(response.data);
-            toast.success("Addition successful")
+            data = trimmer(data);
+            const res = await axios.post(api + "postData", data);
+            console.log(res.data);
+            toast.success("Addition successful");
         } catch (error) {
             console.error("Error:", error);
-            toast.error(error.message)
+            toast.error(error.message);
         }
     };
 
-    const updateUser = async (data) => {
+    const updateData = async (data) => {
         try {
-            console.log(Country)
-            const res = await axios.patch(api + `patchData/${Country}`, data)
-            console.log(res.data)
-            toast.success(`Updation of ${Country} successful`)
+            data = trimmer(data);
+            console.log(Country);
+            const res = await axios.patch(api + `patchData/${Country}`, data);
+            console.log(res.data);
+            toast.success(`Updation of ${Country} successful`);
         }
         catch (err) {
-            console.log(err.message)
-            toast.error("Error while updating")
+            console.log(err.message);
+            toast.error("Error while updating");
         }
-    }
+    };
 
     return (
         <>
             <div>
                 <ToastContainer />
-                {create ? <h2>Add new data</h2>: <h2>Update {Country} data</h2>}
-                <form onSubmit={handleSubmit(create ? createUser : updateUser)}>
+                {create ? <h2>Add new data</h2> : <h2>Update {Country} data</h2>}
+                <form onSubmit={handleSubmit(create ? createData : updateData)}>
                     <div>
                         <input
                             type="text"
@@ -47,7 +55,7 @@ const Forms = ({ create = true, Country }) => {
                                 required: "Country Cannot be empty",
                                 pattern: {
                                     value: /^[A-Z a-z]+/,
-                                    message: "Country can only contain alphabets"
+                                    message: "Country can only contain alphabets and should not contain empty spaces at the end"
                                 }
                             })}
                         />
@@ -60,7 +68,10 @@ const Forms = ({ create = true, Country }) => {
                             id="law"
                             placeholder='Law'
                             {...register("Law", {
-                                required: "Law cannot be empty"
+                                required: "Law cannot be empty",
+                                pattern: {
+                                    value: /^[A-z a-z]+/
+                                }
                             })}
                         />
                         {errors.Law &&
@@ -80,7 +91,7 @@ const Forms = ({ create = true, Country }) => {
                     </div>
                     <div>
                         <input
-                            placeholder='state or region'
+                            placeholder='State or Region'
                             type="text"
                             id="state"
                             {...register("State_Region_if_applicable", {
@@ -90,12 +101,37 @@ const Forms = ({ create = true, Country }) => {
                         {errors.State_Region_if_applicable &&
                             <p className='error'>{errors.State_Region_if_applicable.message}</p>}
                     </div>
+                    {/* Adding input field for Continent */}
+                    <div>
+                        <input
+                            placeholder='Continent'
+                            type="text"
+                            id="continent"
+                            {...register("Continent", {
+                                required: "Continent cannot be empty"
+                            })}
+                        />
+                        {errors.Continent &&
+                            <p className='error'>{errors.Continent.message}</p>}
+                    </div>
+                    {/* Adding input field for Created_by */}
+                    <div>
+                        <input
+                            type="text"
+                            id="createdBy"
+                            placeholder='Created by'
+                            {...register("Created_by", {
+                                required: "Created by cannot be empty"
+                            })}
+                        />
+                        {errors.Created_by &&
+                            <p className='error'>{errors.Created_by.message}</p>}
+                    </div>
                     <button type="submit">Submit</button>
                 </form>
             </div>
-
         </>
     )
-}
+};
 
 export default Forms;
