@@ -1,4 +1,5 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
+
 const LawSchema = mongoose.Schema({
     Country: {
         required: true,
@@ -11,10 +12,19 @@ const LawSchema = mongoose.Schema({
     Law: {
         required: true,
         type: String
-    }, Penalty: {
+    },
+    Penalty: {
+        required: true,
+        type: String
+    },
+    Continent: {
+        required: true,
+        type: String
+    },
+    Created_by: {
         required: true,
         type: String
     }
-})
+});
 
-module.exports = mongoose.model('dumblaws', LawSchema)
+module.exports = mongoose.model('dumblaws', LawSchema);
