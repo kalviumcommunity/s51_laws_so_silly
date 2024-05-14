@@ -31,4 +31,4 @@ Prepare to be amazed and perhaps a little bewildered by laws that defy expectati
 
 Check out the backend [here](https://laws-so-silly.onrender.com/)!
 
-Check out the frontend [here](https://s51-lawssossilly.netlify.app/)!
+Check out the frontend [here](https://s51-laws-so-ssilly.netlify.app/)!
