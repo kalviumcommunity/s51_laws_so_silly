@@ -8,9 +8,7 @@ Welcome to Laws So Silly, your ultimate guide to the wacky and wonderful world o
 2. [Description](#description)
 3. [Features](#features)
 4. [Bonus](#bonus)
-5. [Getting Started](#getting-started)
-6. [Contributing](#contributing)
-7. [License](#license)
+5. [deployment](#deployment)
 
 ## Idea
 
@@ -28,3 +26,9 @@ Prepare to be amazed and perhaps a little bewildered by laws that defy expectati
 ## Bonus
 
 - **Contribute Your Finds:** Have you encountered a law so strange it deserves a place on our platform? Share it with us, and it might just earn a featured spot!
+
+## Deployment
+
+Check out the backend [here](https://laws-so-silly.onrender.com/)!
+
+Check out the frontend [here](https://s51-laws-so-ssilly.netlify.app/)!

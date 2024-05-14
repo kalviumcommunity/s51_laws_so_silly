@@ -1,0 +1,17 @@
+meta {
+  name: patch update
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:3000/api/patchData/Country
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "Country": "sample country"
+  }
+}
