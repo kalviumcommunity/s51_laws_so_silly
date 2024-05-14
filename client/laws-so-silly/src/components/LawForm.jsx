@@ -17,8 +17,8 @@ const Forms = ({ create = true, Country }) => {
     const createData = async (data) => {
         try {
             data = trimmer(data);
-            const response = await axios.post(api + "postData", data);
-            console.log(response.data);
+            const res = await axios.post(api + "postData", data);
+            console.log(res.data);
             toast.success("Addition successful");
         } catch (error) {
             console.error("Error:", error);
